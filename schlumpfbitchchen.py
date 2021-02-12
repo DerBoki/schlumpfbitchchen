@@ -8,6 +8,8 @@ client = discord.Client()
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
 
+    botPrefix = "!"
+
 
     def checkhub(result):
         if result == 0:
@@ -19,34 +21,27 @@ async def on_ready():
         return output
 
 
-
     @client.event
     async def on_message(message):
         if message.author == client.user:
             return
 
-        if message.content.startswith('!sexy'):
-            await message.channel.send('Oh danke, mein Süßer :kissing_heart:')
-
-        if message.content.startswith('!ut4hubstatus'):
+        if message.content.startswith(botPrefix+'ut4hubstatus'):
             output = checkhub( os.system("/bin/systemctl status isp-ut4"))
             await message.channel.send(output)
 
-        if message.content.startswith('!ut4fullstatus'):
+        if message.content.startswith(botPrefix+'ut4fullstatus'):
             output ="```" + str(subprocess.check_output("SYSTEMD_COLORS=0 systemctl status isp-ut4.service", shell=True)).replace('\\n', '\n').replace('\\t', '\t') + "```"
             await message.channel.send(output)
 
-        if message.content.startswith('!ut4hubrestart'):
+        if message.content.startswith(botPrefix+'ut4hubrestart'):
             await message.channel.send("Uuuh jaaa ich kann es kaum erwarten, ich starte den Hub neu... :star_struck:")
             output = checkhub( os.system("sudo /bin/systemctl restart isp-ut4"))
             await message.channel.send(output)
 
-        if message.content.startswith('!ut4hubconfigdeploy'):
+        if message.content.startswith(botPrefix+'ut4hubconfigdeploy'):
             await message.channel.send("oh oh OH OH ! OOOOOOOH! Ich SAUGE DIE CONFIG VON GITHUB JAAAA :dizzy_face: :face_vomiting: :relaxed:")
             os.system("cd ~/Config && git pull")
-
-
-
 
 
 with open('apikey', 'r') as myfile:
